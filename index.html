@@ -1,33 +1,106 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello Domoticz</title>
-    <script src="js/react.development.js?v=16.3.1"></script>
-    <script src="js/react-dom.development.js?v=16.3.1"></script>
-    <script src="js/babel.min.js?v=6.15.0"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="text/babel">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link rel="stylesheet" href="css/fonts/iconfont.css">
+    <link rel="stylesheet" href="css/vuetify.min.css">
+    <link rel="stylesheet/less" type="text/css" href="css/main.less" />
+    <script src="js/less.min.js" type="text/javascript"></script>
+</head>
+<body>
+    
+    <div id="mainLayout" style="width: 100%;">
+        <v-app dark>
+                <v-toolbar dense app flat>
+                        <v-toolbar-title></v-toolbar-title>
+                        <clock-component :time=time :date=date :week=week :sunrise=sunrise :sunset=sunset></clock-component>
+                    <v-btn icon flat @click.stop="setDialog = true" class="mr-0"><v-icon>more_vert</v-icon></v-btn>
+                    <v-dialog v-model="setDialog" max-width="500px">
+                            <v-card>
+                              <v-card-title>
+                                  调整布局
+                              </v-card-title>
+                              <v-card-text>
+                                    <v-switch :label="`拖动布局`" v-model="draggable" hide-details></v-switch>
+                                    <v-switch :label="`更改大小`" v-model="resizable" hide-details></v-switch>
+                                    <v-btn @click="resetLayout">重置布局</v-btn>
+                              </v-card-text>
+                              <v-card-actions>
+                                <v-btn flat @click.stop="setDialog=false">关闭</v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </v-dialog>
+                </v-toolbar>
+                <v-content>
+        <div id="content">
+            <grid-layout :layout="layout"
+                         :device = "device"
+                         :col-num="colNum"
+                         :row-height="35"
+                         :is-draggable="draggable"
+                         :is-resizable="resizable"
+                         :vertical-compact="true"
+                         :use-css-transforms="true"
+                         :auto-size="true"
+                         @layout-updated="layoutUpdatedEvent"
+            >
+                <grid-item v-for="item in layout"
+                           :x="item.x"
+                           :y="item.y"
+                           :w="item.w"
+                           :h="item.h"
+                           :i="item.i"
+                           @ondrag="move"
+                >
 
-      ReactDOM.render(
-        <h1>Hello, Domoticz!</h1>,
-        document.getElementById('root')
-      );
 
-    </script>
-    <!--
-      Note: this page is a great way to try React but it's not suitable for production.
-      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+                <v-card v-bind:class=[devices[item.i]['type'],devices[item.i]['class']] v-on:click.native="clicked(item.i,draggable)">
+                    <v-card-title primary-title>
+                        <div>
+                        <h3 class="headline">
+                            <v-icon :class=devices[item.i]['class']>{{devices[item.i]['icon']}}</v-icon>
+                            <span class="device-name">{{devices[item.i]['Name']}}</span>
+                        </h3>
+                        <div class="device-status">{{devices[item.i]['Status']?devices[item.i]['Status']:""}}</div>
+                        <template v-if="devices[item.i]['type']==='general'">
+                            <div class="general">
+                            {{devices[item.i]['Data']}}
+                            </div>
+                        </template>
+                        <v-btn-toggle mandatory class="white" v-model=devices[item.i]['levelCur'] v-if="devices[item.i]['type']==='selector'">
+                            <v-btn flat color="green" v-for="levelName in devices[item.i]['levels']">{{levelName}}</v-btn>
+                        </v-btn-toggle>
+                    </div>
+                    <v-progress-linear :indeterminate="true" v-if="false"></v-progress-linear>
+                      </v-card-title>
+                    <v-card-actions>
+                      <span class="device-update grey--text"><v-icon class="grey--text">query_builder</v-icon>{{devices[item.i]['LastUpdate']}}</span>
+                      <v-spacer></v-spacer>
+                      <span class="device-idx grey--text">{{item.i}}</span>
+                    </v-card-actions>
+                  </v-card>
 
-      To set up a production-ready React build environment, follow these instructions:
-      * https://reactjs.org/docs/add-react-to-a-new-app.html
-      * https://reactjs.org/docs/add-react-to-an-existing-app.html
+                </grid-item>
+            </grid-layout>
+            
+        </div>
+        </v-content>
+    </v-app>
+    </div>
+<!-- development version, includes helpful console warnings -->
+<script src="js/vue.min.js"></script>
+<script src="js/vuetify.min.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/vue-grid-layout.min.js"></script>
+<script src="js/vue-cookies.js"></script>
+<script src="config.js"></script>
+<script src="js/main.js"></script>
+<script>
+    //console.log(domoticz.server + '/json.htm?type=devices&filter=all&used=true&order=Name');
 
-      You can also use React without JSX, in which case you can remove Babel:
-      * https://reactjs.org/docs/react-without-jsx.html
-      * https://reactjs.org/docs/cdn-links.html
-    -->
-  </body>
+</script>
+</body>
 </html>

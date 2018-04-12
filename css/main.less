@@ -1,0 +1,83 @@
+
+
+@background-color: #eee;
+
+@default: #657180;
+@note: #9ea7b4;
+@bold: #464c5b;
+
+@active: #3399ff;
+@disable: #c3cbd6;
+
+@primary: #2d8cf0;
+@primary-light: #5cadff;
+@primary-dark: #2b85e4;
+@primary-on: #0098FB;
+
+@info: #2d8cf0;
+@success: #19be6b;
+@warning: #ff9900;
+@error: #ed3f14;
+
+@black: #495060;
+@black-primary: #1c2438;
+@black-note: #80848f;
+@black-dis: #bbbec4;
+
+@off: #888C99;
+@on: #fff;
+
+html{
+
+    font-size: 14px;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+}
+body {
+    background: @background-color;
+    color: @default;
+    min-width: 860px;
+}
+.clock{width:100%;
+    .date{float: left;}
+    .sun{float: right;}
+}
+.vue-grid-item{
+    
+}
+.card {
+    height: 100%;
+    color: #fff;
+}
+.card .headline i {
+    font-size: 2.28rem;
+}
+.card .headline i.off {
+    opacity: 0.7;
+}
+.card__title{
+    padding-bottom: 0.3rem;
+}
+.general{margin-left: 0.5rem}
+.device-status{
+    position: absolute;
+    right: 0.16rem;
+    top: 0.14rem;
+}
+.device-update i{
+    font-size: 0.86rem;
+    margin-right: 0.14rem;
+    margin-top:-1px;
+}
+.device-name{
+    font-size: 1.28rem;
+}
+
+.selector .btn-toggle{margin:0 auto;}
+.device-update{
+    @media (max-width: 1010px) {
+        display: none;
+    }
+}
