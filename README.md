@@ -1,6 +1,6 @@
-# Flex
+# FlexUI for Domoticz
 
-FlexUI for Domoticz
+Base on React
 
 Working...
 
