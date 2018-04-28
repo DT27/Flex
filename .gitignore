@@ -7,7 +7,9 @@
 /coverage
 
 # production
-/build
+# /build
+/build/Test
+/build/json.htm
 
 # misc
 .DS_Store
